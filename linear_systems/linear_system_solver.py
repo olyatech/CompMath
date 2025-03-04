@@ -1,5 +1,36 @@
 import numpy as np
 
+def matrix_multiplication(A, B):
+    """
+    Multiplies matrices instead of np.dot because built-in multiplication methods are forbidden
+
+    Parameters:
+    A (np.array): Left matrix
+    B (np.array): Right matrix
+
+    Returns:
+    M (np.array): Multiplication result M = AB
+    """
+
+    if A.ndim == 1:
+        A = np.expand_dims(A, axis=0)
+
+    if B.ndim == 1:
+        B = np.expand_dims(B, axis=1)
+
+    print(A.shape, B.shape)
+    if A.shape[1] != B.shape[0]:
+        raise np.linalg.LinAlgError("Matrices dimensions mismatch")
+    
+    M = np.zeros((A.shape[0], B.shape[1]))
+
+    for row in range(A.shape[0]):
+        for col in range(B.shape[1]):
+            for idx in range(A.shape[1]):
+                M[row, col] += A[row, idx] * B[idx, col]
+
+    return np.squeeze(M)
+
 def lu_decomposition(A):
     """
     Perform LU decomposition with partial pivoting: PA = LU.
@@ -60,15 +91,15 @@ def solve_lu(A, b):
     P, L, U = lu_decomposition(A)
 
     # Solve Ly = Pb using forward substitution
-    Pb = np.dot(P, b)
+    Pb = matrix_multiplication(P, b)
     y = np.zeros_like(b)
     for i in range(len(b)):
-        y[i] = Pb[i] - np.dot(L[i, :i], y[:i])
+        y[i] = Pb[i] - matrix_multiplication(L[i, :i], y[:i])
 
     # Solve Ux = y using back substitution
     x = np.zeros_like(b)
     for i in range(len(b) - 1, -1, -1):
-        x[i] = (y[i] - np.dot(U[i, i+1:], x[i+1:])) / U[i, i]
+        x[i] = (y[i] - matrix_multiplication(U[i, i+1:], x[i+1:])) / U[i, i]
 
     return x, P, L, U
 
