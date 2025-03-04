@@ -18,7 +18,6 @@ def matrix_multiplication(A, B):
     if B.ndim == 1:
         B = np.expand_dims(B, axis=1)
 
-    print(A.shape, B.shape)
     if A.shape[1] != B.shape[0]:
         raise np.linalg.LinAlgError("Matrices dimensions mismatch")
     
