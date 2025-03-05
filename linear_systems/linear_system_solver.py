@@ -103,10 +103,11 @@ def solve_lu(A, b):
     return x, P, L, U
 
 def example_usage():
-    # Initial matrices
+    # Simple test
     A = np.array([[2, 1, -1], [-3, -1, 2], [-2, 1, 2]], dtype=float)
     b = np.array([8, -11, -3], dtype=float)
 
+    print("Try simple test with small matrices.")
     print("Matrix A:\n", A)
     print("Vector b:\n", b)
 
@@ -122,7 +123,21 @@ def example_usage():
     # Show difference with numpy.linalg.solve
     expected_solution = np.linalg.solve(A, b)
     norm_difference = np.linalg.norm(solution - expected_solution)
-    print("Norm of difference with numpy.linalg.solve:", norm_difference)
+    print("For small simple test norm of difference with numpy.linalg.solve:", norm_difference)
+
+    # try big random matrices
+    matrix_size = 100
+
+    A = np.random.rand(matrix_size, matrix_size)
+    b = np.random.rand(matrix_size)
+    while np.linalg.matrix_rank(A) != matrix_size:
+       A = np.random.rand(matrix_size, matrix_size) 
+
+    solution, P, L, U = solve_lu(A, b)
+    expected_solution = np.linalg.solve(A, b)
+
+    norm_difference = np.linalg.norm(solution - expected_solution)
+    print("For random matrix 100x100 norm of difference with numpy.linalg.solve:", norm_difference)
 
 if __name__ == "__main__":
     example_usage()

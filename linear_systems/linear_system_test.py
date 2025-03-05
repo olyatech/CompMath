@@ -16,10 +16,15 @@ def test_solve_lu_identity():
     expected_solution = np.linalg.solve(A, b)
     assert np.allclose(solution, expected_solution), "Test failed for identity matrix"
 
-def test_solve_lu_random():
-    np.random.seed(0)  # For reproducibility
-    A = np.random.rand(4, 4)
-    b = np.random.rand(4)
+def test_solve_lu_big_random():
+    matrix_size = 100
+
+    A = np.random.rand(matrix_size, matrix_size)
+    b = np.random.rand(matrix_size)
+
+    while np.linalg.matrix_rank(A) != matrix_size:
+       A = np.random.rand(matrix_size, matrix_size) 
+
     solution, P, L, U = solve_lu(A, b)
     expected_solution = np.linalg.solve(A, b)
     assert np.allclose(solution, expected_solution), "Test failed for random matrix"
