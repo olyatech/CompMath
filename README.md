@@ -1,4 +1,4 @@
-# Implementation of Computational mathematics algorithms for MIPT CompMath course
+# Implementation of Computational mathematics algorithms for MIPT CompMath & Applied linear algebra courses
 
 ## Strict methods for systems solving
 Implementation of Gaussian elimination with partial pivoting for systems like $Ax = b$. 
